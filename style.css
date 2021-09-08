@@ -130,7 +130,7 @@ table.table td i {
     font-size: 19px;
 }
 
-table.table .avatar {
+.picture {
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 10px;

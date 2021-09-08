@@ -56,9 +56,10 @@
 
                             <div class="mb-3">
                                 <label for="picture" class="form-label">Adauga poza</label>
-                                <input class="form-control" type="file" id="picture" onchange="showMyImage(this)" accept="image/*">
+                                <input class="form-control" type="file" id="picture-input" accept="image/*">
                                 <br>
-                                <img id="imgPreview" src="assets/profile-male.png" height=150>
+                                <img id="imgPreview" class="preview-profile-pic" src="" height=150>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-secondary close-myModal">Renunta</button>
@@ -92,21 +93,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <a href="#"><img src="assets/profile-male.png" class="avatar" alt="Avatar"></a>
-                            </td>
-                            <td>Michael Holz</td>
-                            <td>michaelholz@gmail.com</td>
-                            <td>Male</td>
-                            <td>04/10/2013</td>
-                            <td>
-                                <div class="delete-container"><a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a></div>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>

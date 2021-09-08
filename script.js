@@ -1,7 +1,7 @@
 window.onload = () => {
     document.getElementById("addEmployeeModal").addEventListener("click", AddEmployee, false);
     document.getElementById("openEmployeeModal").addEventListener("click", openModal, false);
-
+    document.getElementById("picture-input").addEventListener("change", previewProfilePicture, false);
     document.querySelectorAll(".close-myModal").forEach(e => {
         e.addEventListener("click", closeModal, false);
     });
@@ -28,6 +28,7 @@ function openModal() {
 
 //Close modal function
 function closeModal() {
+    resetModalForm();
     document.getElementById('myModal').style = "display:none";
     document.getElementById('myModal').classList.remove("show");
 }
@@ -53,13 +54,7 @@ function AppendTable(employee) {
     document.getElementById("tableEmployees").innerHTML += tableContent;
 }
 
-function AddEmployee() {
-    Name = document.getElementById("name-input").value;
-    email = document.getElementById("email-input").value;
-    sex = document.getElementById("sex-input").value;
-    birthDate = document.getElementById("birthdate-input").value;
-    // picture = document.getElementById("imgPreview").src;
-
+function formValidation(Name, email, sex, birthDate, picture) {
     formIsValid = validateEmployeeFields(Name, email, sex, birthDate);
 
     if (formIsValid) {
@@ -75,7 +70,30 @@ function AddEmployee() {
         AppendTable(newEmployee);
         setDelete();
         closeModal();
+
     }
+}
+
+function AddEmployee() {
+    Name = document.getElementById("name-input").value;
+    email = document.getElementById("email-input").value;
+    sex = document.getElementById("sex-input").value;
+    birthDate = document.getElementById("birthdate-input").value;
+    picture = document.getElementById("picture-input").files[0];
+
+    var reader = new FileReader();
+    // Populate table once the image is ready
+    reader.addEventListener("load", () => {
+        readProfilePic = reader.result;
+        formValidation(Name, email, sex, birthDate, readProfilePic);
+    });
+    if (picture != undefined) {
+        reader.readAsDataURL(picture);
+    } else {
+        formValidation(Name, email, sex, birthDate, "");
+    }
+
+
 }
 
 //Delete event set on click
@@ -149,4 +167,30 @@ function validateEmployeeFields(employeeName, employeeEmail, employeeSex, employ
         return false;
     }
     return true;
+}
+
+// Preview Profile Picture in Modal
+function previewProfilePicture() {
+    employeeProfilePicPreview = document.getElementById("picture-input").files[0];
+    previewImg = document.getElementById("imgPreview");
+    var reader = new FileReader();
+    // Populate table once the image is ready
+    reader.addEventListener("load", () => {
+        chosenImage = reader.result;
+        previewImg.style = 'display:block; border-radius:50%';
+        previewImg.setAttribute('src', chosenImage);
+    });
+    reader.readAsDataURL(employeeProfilePicPreview)
+}
+
+// Reset modal form
+function resetModalForm() {
+    document.getElementById("name-input").value = '';
+    document.getElementById("email-input").value = '';
+    document.getElementById("sex-input").value = '';
+    document.getElementById("birthdate-input").value = '';
+    // reset image input
+    document.getElementById("picture-input").files[0] = undefined;
+    document.getElementById("picture-input").value = '';
+    document.getElementById("imgPreview").style = 'display:none';
 }
