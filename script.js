@@ -45,7 +45,7 @@ function AppendTable(employee) {
     <td><img src="${employee.picture}" class="picture"></td>
     <td>${employee.Name}</td>
     <td>${employee.email}</td>
-    <td>${employee.gender}</td>
+    <td>${employee.sex}</td>
     <td>${employee.birthDate}</td>
     <td><div class="delete-container"><a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a></div></td>
     </tr>`
@@ -56,22 +56,26 @@ function AppendTable(employee) {
 function AddEmployee() {
     Name = document.getElementById("name-input").value;
     email = document.getElementById("email-input").value;
-    gender = document.getElementById("gender-input").value;
+    sex = document.getElementById("sex-input").value;
     birthDate = document.getElementById("birthdate-input").value;
     // picture = document.getElementById("imgPreview").src;
 
-    employeeId = JSON.parse(localStorage.getItem('employeeNextId'));
-    allEmployees = JSON.parse(localStorage.getItem('employees'));
+    formIsValid = validateEmployeeFields(Name, email, sex, birthDate);
 
-    newEmployee = new Employee(employeeId++, Name, email, gender, birthDate, picture);
-    allEmployees.push(newEmployee);
+    if (formIsValid) {
+        employeeId = JSON.parse(localStorage.getItem('employeeNextId'));
+        allEmployees = JSON.parse(localStorage.getItem('employees'));
 
-    localStorage.setItem('employeeNextId', JSON.stringify(employeeId));
-    localStorage.setItem('employees', JSON.stringify(allEmployees));
+        newEmployee = new Employee(employeeId++, Name, email, sex, birthDate, picture);
+        allEmployees.push(newEmployee);
 
-    AppendTable(newEmployee);
-    setDelete();
-    closeModal();
+        localStorage.setItem('employeeNextId', JSON.stringify(employeeId));
+        localStorage.setItem('employees', JSON.stringify(allEmployees));
+
+        AppendTable(newEmployee);
+        setDelete();
+        closeModal();
+    }
 }
 
 //Delete event set on click
@@ -96,11 +100,53 @@ function deleteEmployeeRow(htmlDeleteElement) {
     }
 }
 
-function Employee(employeeId, Name, email, gender, birthDate, picture) {
+// Employee constructor
+function Employee(employeeId, Name, email, sex, birthDate, picture) {
     this.employeeId = employeeId;
     this.Name = Name;
     this.email = email;
     this.birthDate = moment(birthDate).format('D MMMM YYYY');
-    this.gender = gender;
+    this.sex = sex;
     this.picture = picture;
+}
+
+//Validators
+// https://www.codegrepper.com/code-examples/javascript/javascript+funtion+to+calculate+age+above+18
+function validateAgeAtLeast16(dateStr) {
+    birthdate = new Date(dateStr);
+    dateDifference = new Date(Date.now() - birthdate.getTime());
+    personAge = dateDifference.getUTCFullYear() - 1970;
+    return personAge >= 16;
+}
+
+function validateEmployeeFields(employeeName, employeeEmail, employeeSex, employeeBirthdate) {
+    if (employeeName == "") {
+        // alert("Numele este un camp obligatoriu !")
+        return false;
+    }
+
+    if (employeeEmail == "") {
+        // alert("Email-ul nu este valid !")
+        // alert("Email-ul este un camp obligatoriu !")
+        return false;
+    } else {
+        // regex validation for email:  https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (!re.test(employeeEmail)) {
+            // alert("Email-ul introdus nu este valid !")
+            return false;
+        }
+    }
+    if (employeeSex == "") {
+        // alert("Trebuie sa selectati sex-ul angajatului !")
+        return false;
+    }
+    if (employeeBirthdate == "") {
+        // alert("Data nasterii este un camp obligatoriu !")
+        return false;
+    } else if (!validateAgeAtLeast16(employeeBirthdate)) {
+        alert("Employee must be at least 16 years old!");
+        return false;
+    }
+    return true;
 }
