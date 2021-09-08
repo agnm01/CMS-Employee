@@ -6,64 +6,76 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CMS</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 
 <body>
     <div class="container">
-        <div id="addEmployeeModal" class="modal">
-            <div class="card-section modal-content">
-                <div class="card-header">
-                    <h2>Add a new employee</h2>
-                    <div class="spacer"></div>
-                    <button id="closeAddEmployeeModal" class="red">
-                        <i class="fa fa-times"></i>
-                    </button>
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Adauga un angajat</h5>
+                        <button type="button" class="btn-close close-myModal" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="mb-3">
+                                <label for="last-name" class="form-label">Nume</label>
+                                <input type="text" class="form-control" id="last-name" placeholder="Introdu numele" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="first-name" class="form-label">Prenume</label>
+                                <input type="text" class="form-control" id="first-name" placeholder="Introdu prenumele" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email-input" class="form-label">Adresa e-mail</label>
+                                <input type="email" class="form-control" id="email-input" placeholder="name@example.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="gender-input" class="form-label">Sex</label>
+                                <select class="form-select" id="gender-input" required>
+                                    <option value="" selected disabled>Selectati sexul</option>
+                                    <option value="Masculin">Masculin</option>
+                                    <option value="Feminin">Feminin</option>
+                                    <option value="Altul">Altul</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="birthdate-input" class="form-label">Data nasterii</label>
+                                <input type="date" class="form-control" id="birthdate-input" placeholder="" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="picture" class="form-label">Adauga poza</label>
+                                <input class="form-control" type="file" id="picture" onchange="showMyImage(this)" accept="image/*">
+                                <br>
+                                <img id="imgPreview" src="assets/profile-male.png" height=150>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary close-myModal" data-bs-dismiss="modal">Renunta</button>
+                        <button type="submit" class="btn" style="background-color:#27496D; color:white;" id="addEmployeeModal">
+                            Adauga angajat
+                        </button>
+                    </div>
                 </div>
-                <div class="error-list" id="errorListSection" style="display: none">
-                    <h3 class="error-heading"><b>Oops! </b>Your form has the following errors:</h3>
-                    <ul></ul>
-                </div>
-                <div class="form-group">
-                    <div class="field">
-                        <label for="firstName">First Name</label>
-                        <input id="firstName" name="firstName" type="text" placeholder="John" />
-                    </div>
-                    <div class="field">
-                        <label for="lastName">Last Name</label>
-                        <input id="lastName" name="lastName" type="text" placeholder="Doe" />
-                    </div>
-                    <div class="field">
-                        <label for="email">Email</label>
-                        <input id="email" name="email" type="email" placeholder="john.doe@example.com" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="field">
-                        <label for="sex">Sex</label>
-                        <select id="sex" name="sex">
-                            <option value="">Please select an option...</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other / I'd rather not say</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="birthdate">Birthdate</label>
-                        <input id="birthdate" name="birthdate" type="date" />
-                    </div>
-                    <div class="field">
-                        <label for="picture">Profile Photo</label>
-                        <input id="picture" name="picture" type="file" />
-                    </div>
-                </div>
-                <button id="addEmployeeButton" class="green">Add employee</button>
             </div>
         </div>
         <div class="table-responsive">
@@ -73,7 +85,7 @@
                         <div class="col-xs-5">
                             <h2>Employee Management</h2>
                         </div>
-                        <div class="col-xs-7">
+                        <div class="col-xs-7" id="openEmployeeModal" data-bs-toggle="modal" data-bs-target="#myModal">
                             <a href="#" class="btn btn-primary">
                                 <i class="material-icons">&#xE147;</i>
                                 <span>Add New Employee</span>
