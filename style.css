@@ -115,11 +115,6 @@ table.table td a.delete {
     padding-top: 5px;
 }
 
-
-/* table.table td a.delete:hover {
-    box-shadow: 2px 2px 3px 3px grey;
-} */
-
 .delete-container {
     width: fit-content;
     justify-content: center;

@@ -22,19 +22,19 @@ window.onload = () => {
 
 //Open modal function
 function openModal() {
-    document.getElementById('addEmployeeModal').style = "display:block";
-    document.getElementById('addEmployeeModal').classList.add("show");
+    document.getElementById('myModal').style = "display:block";
+    document.getElementById('myModal').classList.add("show");
 }
 
 //Close modal function
 function closeModal() {
-    document.getElementById('addEmployeeModal').style = "display:none";
-    document.getElementById('addEmployeeModal').classList.remove("show");
+    document.getElementById('myModal').style = "display:none";
+    document.getElementById('myModal').classList.remove("show");
 }
 
 //Closing modal at outside click function
 window.onclick = function(event) {
-    if (event.target == document.getElementById('addEmployeeModal')) {
+    if (event.target == document.getElementById('myModal')) {
         closeModal();
     }
 }
