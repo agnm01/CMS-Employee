@@ -24,10 +24,18 @@ window.onclick = function(event) {
 
 
 function AddEmployee() {​​​​​​​​
-    lastName = document.getElementById("last-name").value;
-    firstName = document.getElementById("first-name").value;
+    Name = document.getElementById("name-input").value;
     email = document.getElementById("email-input").value;
     gender = document.getElementById("gender-input").value;
     birthDate = document.getElementById("birthdate-input").value;
     picture = document.getElementById("imgPreview").src;
+}
+
+function Employee(employeeId, Name, email, gender, birthDate, picture) {
+    this.employeeId = employeeId;
+    this.Name = Name;
+    this.email = email;
+    this.birthDate = moment(birthDate).format('D MMMM YYYY');
+    this.gender = gender;
+    this.picture = picture;
 }
