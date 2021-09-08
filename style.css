@@ -24,6 +24,8 @@ body {
     padding: 16px 30px;
     margin: -20px -25px 10px;
     border-radius: 3px 3px 0 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .table-title h2 {
@@ -113,8 +115,20 @@ table.table td a.delete {
     padding-top: 5px;
 }
 
-table.table td a.delete:hover {
+
+/* table.table td a.delete:hover {
     box-shadow: 2px 2px 3px 3px grey;
+} */
+
+.delete-container {
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-container:hover {
+    background-color: #566787;
+    border-radius: 50%;
 }
 
 table.table td i {
