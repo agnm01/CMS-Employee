@@ -1,3 +1,13 @@
+.table-title {
+    background: linear-gradient(90deg, #ff8348, #6235ff);
+    background-size: 100% 100%;
+}
+
+html,
+.dark-background {
+    background-color: #1b1c30;
+}
+
 body {
     color: #566787;
     background: #f5f5f5;
@@ -19,7 +29,6 @@ body {
 
 .table-title {
     padding-bottom: 15px;
-    background: #299be4;
     color: #fff;
     padding: 16px 30px;
     margin: -20px -25px 10px;
@@ -119,10 +128,11 @@ table.table td a.delete {
     width: fit-content;
     justify-content: center;
     align-items: center;
+    margin-left: 15px;
 }
 
 .delete-container:hover {
-    background-color: #566787;
+    box-shadow: 2px 2px 3px 3px #1b1c30;
     border-radius: 50%;
 }
 
@@ -135,6 +145,44 @@ table.table td i {
     vertical-align: middle;
     margin-right: 10px;
     width: 40px;
+}
+
+.required-field {
+    color: #ff5b5b;
+}
+
+.filter-button {
+    background-color: #6235ff;
+    color: #fff;
+    width: fit-content;
+    padding: 5px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 2px;
+}
+
+.modal-cancel-btn {
+    background-color: #6235ff;
+    color: #fff;
+    width: fit-content;
+    padding: 5px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 2px;
+}
+
+.modal-add-btn {
+    background-color: #ff8348;
+    color: #fff;
+    width: fit-content;
+    padding: 5px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 2px;
+}
+
+.sort-description {
+    margin-top: 15px;
 }
 
 .text-success {

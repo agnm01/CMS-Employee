@@ -6,6 +6,9 @@ window.onload = () => {
         e.addEventListener("click", closeModal, false);
     });
 
+    document.getElementById("table-sort-by").addEventListener("change", maintainEmployeeOrder, false);
+    document.getElementById("table-sort-order").addEventListener("change", maintainEmployeeOrder, false);
+
     currentEmployees = JSON.parse(localStorage.getItem('employees'));
 
     if (currentEmployees == undefined) {
@@ -152,30 +155,34 @@ function validateAgeAtLeast16(dateStr) {
     return personAge >= 16;
 }
 
+function noFutureBirths(dateStr) {
+    birthdate = new Date(dateStr);
+    dateDifference = new Date(Date.now() - birthdate.getTime());
+    personAge = dateDifference.getUTCFullYear() - 1970;
+    return personAge >= 16;
+}
+
 function validateEmployeeFields(employeeName, employeeEmail, employeeSex, employeeBirthdate) {
     if (employeeName == "") {
-        // alert("Numele este un camp obligatoriu !")
         return false;
     }
 
     if (employeeEmail == "") {
-        // alert("Email-ul nu este valid !")
-        // alert("Email-ul este un camp obligatoriu !")
         return false;
     } else {
         // regex validation for email:  https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (!re.test(employeeEmail)) {
-            // alert("Email-ul introdus nu este valid !")
             return false;
         }
     }
     if (employeeSex == "") {
-        // alert("Trebuie sa selectati sex-ul angajatului !")
         return false;
     }
     if (employeeBirthdate == "") {
-        // alert("Data nasterii este un camp obligatoriu !")
+        return false;
+    } else if (!noFutureBirths(employeeBirthdate)) {
+        alert("Are you born in the fucking future, Marty McFly?");
         return false;
     } else if (!validateAgeAtLeast16(employeeBirthdate)) {
         alert("Employee must be at least 16 years old!");
@@ -210,6 +217,78 @@ function resetModalForm() {
     document.getElementById("imgPreview").style = 'display:none';
 }
 
+// Comparison functions
+function compareNamesAsc(a, b) {
+    if (a.name < b.name) {
+        return -1;
+    }
+    if (a.name > b.name) {
+        return 1;
+    }
+    return 0;
+}
+
+// the smaller the year, the older the person
+function compareBirthdateAsc(a, b) {
+    ageA = parseInt(moment(a.birthdate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
+    ageB = parseInt(moment(b.birthdate).fromNow().split(' ')[0]);
+
+    if (ageA < ageB) {
+        return -1;
+    }
+    if (ageA > ageB) {
+        return 1;
+    }
+    return 0;
+}
+
+function compareNamesDesc(a, b) {
+    if (a.name < b.name) {
+        return 1;
+    }
+    if (a.name > b.name) {
+        return -1;
+    }
+    return 0;
+}
+
+function compareBirthdateDesc(a, b) {
+    ageA = parseInt(moment(a.birthdate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
+    ageB = parseInt(moment(b.birthdate).fromNow().split(' ')[0]);
+
+    if (ageA < ageB) {
+        return 1;
+    }
+    if (ageA > ageB) {
+        return -1;
+    }
+    return 0;
+}
+
+// Sorts and reprints the whole table
+function maintainEmployeeOrder() {
+    allEmployees = JSON.parse(localStorage.getItem(TABLE_DATA));
+
+    fieldToSortBy = document.getElementById("table-sort-by").value;
+    sortOrder = document.getElementById("table-sort-order").value;
+
+    if (fieldToSortBy == 'name') {
+        if (sortOrder == 'ascendent') {
+            allEmployees.sort(compareNamesAsc);
+        } else {
+            allEmployees.sort(compareNamesDesc);
+        }
+    } else if (fieldToSortBy == 'birthdate') {
+        if (sortOrder == 'ascendent') {
+            allEmployees.sort(compareBirthdateAsc);
+        } else {
+            allEmployees.sort(compareBirthdateDesc);
+        }
+    }
+
+    populateTable(allEmployees);
+    setDelete();
+}
 
 
 
