@@ -14,11 +14,13 @@ General Requirements:
 
 Bonuses:
 * [x] User must be at least 16 years old
+* [x] User can't be born in the future (separately treated with different error message)
 * [x] Regex validation for email
 * [x] Date of birth is displayed as "26 April 2021" instead of "26/04/2021"
 * [x] Employee's profile picture is displayed on the left of the name column, in a round component
 * [x] Employees can be alphabetically sorted by name (ascending or descending)
 * [x] Employees can be sorted by date of birth (youngest to oldest or oldest to youngest)
+* [ ] Employees can be filtered by sex or date of birth or if they have a profile picture or not
 * [x] Search bar for finding employees by name
 * [x] Persistence with local storage
 * [x] Data input from modal
