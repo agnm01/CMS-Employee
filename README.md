@@ -21,7 +21,7 @@ Bonuses:
 * [x] Employees can be alphabetically sorted by name (ascending or descending)
 * [x] Employees can be sorted by date of birth (youngest to oldest or oldest to youngest)
 * [ ] Employees can be filtered by sex or date of birth or if they have a profile picture or not
-* [x] Search bar for finding employees by name
+* [x] Search bar for finding employees by name (work in progress)
 * [x] Persistence with local storage
 * [x] Data input from modal
 * [x] Looks awesome
