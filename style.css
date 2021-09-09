@@ -1,6 +1,7 @@
 .table-title {
     background: linear-gradient(90deg, #ff8348, #6235ff);
     background-size: 100% 100%;
+    scroll-behavior: none;
 }
 
 html,
