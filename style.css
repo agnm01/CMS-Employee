@@ -161,6 +161,10 @@ table.table td i {
     border-radius: 2px;
 }
 
+.filter-button:hover {
+    background-color: #ff8348;
+}
+
 .modal-cancel-btn {
     background-color: #6235ff;
     color: #fff;

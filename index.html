@@ -79,20 +79,26 @@
                     </a>
                 </div>
                 <div class="table-options">
-                    <input type="search" placeholder="Find employees by...">
+                    <div class="search-bar">
+                        <div class="input-group">
+                            <div class="form-outline">
+                                <input type="search" id="search-employee" class="form-control" placeholder="Find employee..." />
+                            </div>
+                        </div>
+                    </div>
 
                     <p class="sort-description">Filter by:</p>
                     <select class="form-select sort-select" id="table-sort-by">
                         <option class="sort-option" selected value="name">Name</option>
                         <option class="sort-option" value="birthdate">Date of birth</option>
                     </select>
-                    <p class="sort-description">Sort by:</p>
+                    <p class="sort-description">Sort as:</p>
                     <select class="form-select sort-select" id="table-sort-order">
-                        <option class="sort-option" selected value="ascendent">Ascendent</option>
-                        <option class="sort-option" value="descendent">Descendent</option>
+                        <option class="sort-option" selected value="ascendent">Ascending</option>
+                        <option class="sort-option" value="descendent">Descending</option>
                     </select>
 
-                    <button class="filter-button">Filter</button>
+                    <button id="filterButton" class="filter-button">Filter</button>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead>

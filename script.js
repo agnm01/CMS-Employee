@@ -2,12 +2,14 @@ window.onload = () => {
     document.getElementById("addEmployeeModal").addEventListener("click", AddEmployee, false);
     document.getElementById("openEmployeeModal").addEventListener("click", openModal, false);
     document.getElementById("picture-input").addEventListener("change", previewProfilePicture, false);
+    document.getElementById("search-employee").addEventListener("change", searchEmployee, false);
     document.querySelectorAll(".close-myModal").forEach(e => {
         e.addEventListener("click", closeModal, false);
     });
 
-    document.getElementById("table-sort-by").addEventListener("change", maintainEmployeeOrder, false);
-    document.getElementById("table-sort-order").addEventListener("change", maintainEmployeeOrder, false);
+    // document.getElementById("table-sort-by").addEventListener("change", maintainEmployeeOrder, false);
+    // document.getElementById("table-sort-order").addEventListener("change", maintainEmployeeOrder, false);
+    document.getElementById("filterButton").addEventListener("click", maintainEmployeeOrder, false);
 
     currentEmployees = JSON.parse(localStorage.getItem('employees'));
 
@@ -80,7 +82,8 @@ function formValidation(Name, email, sex, birthDate, picture) {
         localStorage.setItem('employeeNextId', JSON.stringify(employeeId));
         localStorage.setItem('employees', JSON.stringify(allEmployees));
 
-        AppendTable(newEmployee, allEmployees.length - 1);
+        maintainEmployeeOrder();
+        // AppendTable(newEmployee, allEmployees.length - 1);
         setDelete();
         closeModal();
 
@@ -159,7 +162,7 @@ function noFutureBirths(dateStr) {
     birthdate = new Date(dateStr);
     dateDifference = new Date(Date.now() - birthdate.getTime());
     personAge = dateDifference.getUTCFullYear() - 1970;
-    return personAge >= 16;
+    return personAge <= 0;
 }
 
 function validateEmployeeFields(employeeName, employeeEmail, employeeSex, employeeBirthdate) {
@@ -181,7 +184,7 @@ function validateEmployeeFields(employeeName, employeeEmail, employeeSex, employ
     }
     if (employeeBirthdate == "") {
         return false;
-    } else if (!noFutureBirths(employeeBirthdate)) {
+    } else if (noFutureBirths(employeeBirthdate)) {
         alert("Are you born in the fucking future, Marty McFly?");
         return false;
     } else if (!validateAgeAtLeast16(employeeBirthdate)) {
@@ -219,10 +222,10 @@ function resetModalForm() {
 
 // Comparison functions
 function compareNamesAsc(a, b) {
-    if (a.name < b.name) {
+    if (a.Name.toUpperCase() < b.Name.toUpperCase()) {
         return -1;
     }
-    if (a.name > b.name) {
+    if (a.Name.toUpperCase() > b.Name.toUpperCase()) {
         return 1;
     }
     return 0;
@@ -230,8 +233,8 @@ function compareNamesAsc(a, b) {
 
 // the smaller the year, the older the person
 function compareBirthdateAsc(a, b) {
-    ageA = parseInt(moment(a.birthdate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
-    ageB = parseInt(moment(b.birthdate).fromNow().split(' ')[0]);
+    ageA = parseInt(moment(a.birthDate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
+    ageB = parseInt(moment(b.birthDate).fromNow().split(' ')[0]);
 
     if (ageA < ageB) {
         return -1;
@@ -243,18 +246,18 @@ function compareBirthdateAsc(a, b) {
 }
 
 function compareNamesDesc(a, b) {
-    if (a.name < b.name) {
+    if (a.Name.toUpperCase() < b.Name.toUpperCase()) {
         return 1;
     }
-    if (a.name > b.name) {
+    if (a.Name.toUpperCase() > b.Name.toUpperCase()) {
         return -1;
     }
     return 0;
 }
 
 function compareBirthdateDesc(a, b) {
-    ageA = parseInt(moment(a.birthdate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
-    ageB = parseInt(moment(b.birthdate).fromNow().split(' ')[0]);
+    ageA = parseInt(moment(a.birthDate).fromNow().split(' ')[0]); // "13 years ago" --> 13 as an int 
+    ageB = parseInt(moment(b.birthDate).fromNow().split(' ')[0]);
 
     if (ageA < ageB) {
         return 1;
@@ -267,7 +270,7 @@ function compareBirthdateDesc(a, b) {
 
 // Sorts and reprints the whole table
 function maintainEmployeeOrder() {
-    allEmployees = JSON.parse(localStorage.getItem(TABLE_DATA));
+    allEmployees = JSON.parse(localStorage.getItem("employees"));
 
     fieldToSortBy = document.getElementById("table-sort-by").value;
     sortOrder = document.getElementById("table-sort-order").value;
@@ -280,14 +283,39 @@ function maintainEmployeeOrder() {
         }
     } else if (fieldToSortBy == 'birthdate') {
         if (sortOrder == 'ascendent') {
-            allEmployees.sort(compareBirthdateAsc);
-        } else {
             allEmployees.sort(compareBirthdateDesc);
+        } else {
+            allEmployees.sort(compareBirthdateAsc);
         }
     }
 
-    populateTable(allEmployees);
+    document.getElementById("tableEmployees").innerHTML = "";
+    var tableCount = 0;
+    allEmployees.forEach(e => {
+        AppendTable(e, tableCount++);
+    });
     setDelete();
+}
+
+//Search employee by string (search bar)
+function searchEmployee() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("search-employee");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("tableEmployees");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1]; // for column name
+
+        if (td) {
+            if ((td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                tr[i].style.display = "block";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }
 
 
